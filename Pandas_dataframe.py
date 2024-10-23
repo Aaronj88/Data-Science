@@ -65,9 +65,36 @@ print(titanic.columns)
 titanic.rename(columns={"Siblings/Spouses Aboard":"Family Aboard","Fare":"Ticket Cost"},inplace = True)
 print(titanic.columns)
 
-
-
 #saving (changes to) a csv file:
 #titanic.to_csv("fake_titanic.csv")
 
+#Grouping data
+grouped_data = titanic.groupby("Pclass")
+print(grouped_data.count())
 
+grouped_data = titanic[["Age","Sex","Pclass","Ticket Cost"]].groupby(["Sex","Pclass"])
+print(grouped_data.mean())
+
+#agregated fuctions on multiple columns
+c = titanic[["Age","Ticket Cost"]]
+print(c.mean())
+
+print(titanic.agg({"Age":["min","max"],"Ticket Cost":["min","max","mean"]}))
+
+
+#sorting
+print(titanic.sort_values(by="Age"))
+
+#replace values
+titanic["Sex"].replace({"male":"M","female":"F"},inplace=True)
+print(titanic.head(10))
+
+#operation on text data
+t = titanic["Name"].str.lower()
+print(t)
+#string operation to take last names only
+names = titanic["Name"].str.split().str.get(-1)
+print(names)
+#adding it as a new column
+titanic["Last Name"] = titanic["Name"].str.split().str.get(-1)
+print(titanic)
